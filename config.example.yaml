@@ -1,0 +1,35 @@
+# MCP RAG Starter Configuration
+
+# Embeddings configuration
+embeddings:
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  cache_dir: ".cache"
+
+# Vector store configuration
+vector_store:
+  persist_dir: ".vector_store"
+  dim: 384  # Must match embeddings model output dimension
+
+# BM25 configuration
+bm25:
+  k1: 1.5      # BM25 k1 parameter
+  b: 0.75      # BM25 b parameter
+
+# Cross-encoder reranker configuration
+reranker:
+  model_name: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  batch_size: 32
+  cache_dir: ".cache"
+
+# Document chunking configuration
+chunking:
+  max_chunk_size: 512      # Maximum chunk size in tokens
+  overlap: 50              # Overlap between chunks in tokens
+  respect_headers: true    # Respect document structure (headers, paragraphs)
+
+# Retrieval parameters
+top_k_hybrid: 20      # Top K results from hybrid search before reranking
+top_k_reranked: 5     # Final top K results after reranking
+
+# Knowledge base directory
+knowledge_base_dir: "./knowledge_base"
