@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "question": "What are the main principles of the Federalist Papers?",
+    "answer": "The Federalist Papers advocate for a strong central government with separation of powers and checks and balances between legislative, executive, and judicial branches."
+  },
+  {
+    "id": 2,
+    "question": "Who were the primary authors of the Federalist Papers?",
+    "answer": "The Federalist Papers were written by Alexander Hamilton, James Madison, and John Jay."
+  },
+  {
+    "id": 3,
+    "question": "How does the Constitution balance power between states and federal government?",
+    "answer": "The Constitution grants certain powers to the federal government while reserving other powers to the states, creating a federalist system."
+  },
+  {
+    "id": 4,
+    "question": "What is the purpose of separation of powers?",
+    "answer": "Separation of powers divides government authority among legislative, executive, and judicial branches to prevent concentration of power."
+  },
+  {
+    "id": 5,
+    "question": "Why did the founders establish a system of checks and balances?",
+    "answer": "Checks and balances ensure no single branch of government becomes too powerful and protect individual liberties."
+  },
+  {
+    "id": 6,
+    "question": "What protections does the Bill of Rights provide?",
+    "answer": "The Bill of Rights protects fundamental freedoms including speech, religion, press, assembly, and the right to petition."
+  },
+  {
+    "id": 7,
+    "question": "How does the amendment process work?",
+    "answer": "Amendments require approval from two-thirds of both houses of Congress and ratification by three-fourths of state legislatures."
+  },
+  {
+    "id": 8,
+    "question": "What is the Electoral College and why was it created?",
+    "answer": "The Electoral College is a system of electors chosen by states who cast votes for president, created as a compromise between direct popular election and Congressional selection."
+  },
+  {
+    "id": 9,
+    "question": "How are Supreme Court justices selected?",
+    "answer": "Supreme Court justices are nominated by the President and must be confirmed by the Senate."
+  },
+  {
+    "id": 10,
+    "question": "What powers does Congress have under the Constitution?",
+    "answer": "Congress has legislative powers including taxation, regulation of commerce, coining money, creating courts, and declaring war."
+  },
+  {
+    "id": 11,
+    "question": "How does the veto power limit presidential authority?",
+    "answer": "Congress can override a presidential veto with a two-thirds majority vote in both houses, preventing the President from unilaterally blocking legislation."
+  },
+  {
+    "id": 12,
+    "question": "What is the Necessary and Proper Clause?",
+    "answer": "The Necessary and Proper Clause grants Congress authority to make laws needed to carry out its enumerated powers."
+  },
+  {
+    "id": 13,
+    "question": "How does the Constitution protect individual rights?",
+    "answer": "The Constitution protects individual rights through the Bill of Rights and the due process clauses of the Fifth and Fourteenth Amendments."
+  },
+  {
+    "id": 14,
+    "question": "What is the role of the Vice President?",
+    "answer": "The Vice President serves as President of the Senate and assumes the presidency if the President dies or is removed from office."
+  },
+  {
+    "id": 15,
+    "question": "How can the President be removed from office?",
+    "answer": "The President can be removed through impeachment by the House and conviction by the Senate for treason, bribery, or other high crimes and misdemeanors."
+  },
+  {
+    "id": 16,
+    "question": "What is judicial review?",
+    "answer": "Judicial review is the power of courts to determine whether laws and government actions comply with the Constitution."
+  },
+  {
+    "id": 17,
+    "question": "How does the Senate differ from the House of Representatives?",
+    "answer": "The Senate has two members per state regardless of population, while House representation is based on population. Senate terms are six years versus two years for the House."
+  },
+  {
+    "id": 18,
+    "question": "What is the commerce clause?",
+    "answer": "The Commerce Clause gives Congress power to regulate interstate and foreign commerce, and has been broadly interpreted to support federal legislation."
+  },
+  {
+    "id": 19,
+    "question": "How are treaties ratified?",
+    "answer": "Treaties are negotiated by the President but require ratification by a two-thirds vote in the Senate to become binding."
+  },
+  {
+    "id": 20,
+    "question": "What rights does the Fourteenth Amendment protect?",
+    "answer": "The Fourteenth Amendment guarantees due process, equal protection of the laws, and has been interpreted to apply many Bill of Rights protections to the states."
+  }
+]
