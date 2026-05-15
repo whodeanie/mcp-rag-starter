@@ -209,4 +209,4 @@ MIT License. See [LICENSE](LICENSE).
 
 ---
 
-Built by Kerry Dean Jr for Applied AI roles at Anthropic, OpenAI, and top AI startups. Questions? Open an issue or reach out [@whodeanie](https://github.com/whodeanie).
+Built by Kerry Dean Jr | Questions? Open an issue or reach out [@whodeanie](https://github.com/whodeanie).
