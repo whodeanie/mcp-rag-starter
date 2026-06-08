@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mcp-rag-starter"
 version = "0.1.0"
-description = "Production grade RAG packaged as an MCP server"
+description = "Local-first RAG starter packaged as an MCP server"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Kerry Dean Jr", email = "kdjsplash@gmail.com"}
+    {name = "Kerry Dean Jr", email = "57140750+whodeanie@users.noreply.github.com"}
 ]
 keywords = ["mcp", "rag", "vector-search", "retrieval", "ai"]
 classifiers = [

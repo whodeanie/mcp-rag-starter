@@ -2,7 +2,7 @@
 
 ![social](/assets/social.png)
 
-**Production grade RAG, packaged as an MCP server.**
+**A local-first RAG starter packaged as an MCP server.**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/whodeanie/mcp-rag-starter/ci.yml?label=tests&style=flat-square)](https://github.com/whodeanie/mcp-rag-starter/actions)
 [![License](https://img.shields.io/github/license/whodeanie/mcp-rag-starter?style=flat-square)](LICENSE)
@@ -10,7 +10,11 @@
 
 ## Why This Exists
 
-Building RAG systems is complex. This starter provides a production-grade foundation implementing hybrid retrieval (BM25 + vector search), intelligent PDF chunking, reranking, and citation tracking. It runs as an MCP server compatible with Claude, making it immediately useful for AI applications without external APIs.
+Building RAG systems is complex. This starter is a reference implementation for the core pieces teams usually need early: hybrid retrieval (BM25 + vector search), PDF chunking, optional reranking, and citation metadata. It runs as an MCP server compatible with Claude and keeps the stack local-first so it can be studied, forked, and extended without external API keys.
+
+## What this is not
+
+This is not a finished enterprise RAG platform. It does not include tenant isolation, production auth, durable multi-user storage, hosted observability, queue-backed ingestion, access-control enforcement, or a managed vector database. Treat it as a working starter and architecture reference, not a drop-in compliance-ready service.
 
 ## Quickstart
 
@@ -76,7 +80,7 @@ v   v   v
 
 - **Local First**. Uses sentence-transformers for embeddings, FAISS for indexing, and no API keys required.
 
-- **Evaluation Built In**. Includes 20 hand-crafted QA pairs and eval harness measuring recall@k and MRR.
+- **Evaluation Starter**. Includes a small QA fixture set and eval harness measuring recall@k and MRR.
 
 ## Configuration
 
@@ -135,11 +139,11 @@ We ship with 512 tokens and 50 token overlap. This is not arbitrary. Too small (
 
 ### Reranking ROI
 
-Cross-encoders are slow (50-100ms for 20 candidates) but precise. We rerank only the top 20 from hybrid search, not all indexed documents. This gives you 90% of the quality at 10% of the cost. Skipping reranking loses 5-10 percentage points in recall. One inference is cheap enough to skip for production trade-offs.
+Cross-encoders are slower than first-pass retrieval but often more precise. This starter reranks only the top candidates from hybrid search, not all indexed documents. The exact latency and quality tradeoff depends on corpus size, hardware, and model choice, so measure it against your own eval set before relying on it.
 
 ### Citations Build Trust
 
-Users trust retrieval systems with citations more than without. A UI that says "Answer based on document X, page Y" converts skeptics. Every result includes source metadata so your application can render citations, hyperlinks, or confidence scores. This is especially critical for regulated domains (legal, medical, finance).
+Users trust retrieval systems with citations more than without. Every result includes source metadata so your application can render citations, links, or confidence notes. In regulated domains, this is only one piece of the work; you still need policy, access control, audit, and review workflows around it.
 
 ### Why Local Embeddings
 
