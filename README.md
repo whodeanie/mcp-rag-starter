@@ -74,7 +74,7 @@ v   v   v
 
 - **Fast Reranking**. Cross-encoder reranker (ms-marco-MiniLM-L-6-v2) refines top K results with minimal latency.
 
-- **Citation Tracking**. Every result includes source document, line numbers, and content preview for trust and verification.
+- **Source Metadata**. Every result includes source document, line numbers, and a content preview.
 
 - **MCP Compatible**. Three tools exposed via Model Context Protocol: ingest_pdf, query, get_stats. Works with Claude via MCP or any MCP client.
 
@@ -107,63 +107,75 @@ top_k_reranked: 5
 
 ## Evaluation
 
-The system includes an evaluation harness. Run it on your indexed corpus:
+The system includes a small evaluation harness. Run it on a corpus JSON that
+matches your own documents:
 
 ```bash
 python -m evaluation.run_eval config.yaml evaluation/eval_set.json examples/corpus.json
 ```
 
-Output example:
-
-| Metric | Value |
-|--------|-------|
-| Recall@1 | 0.85 |
-| Recall@3 | 0.92 |
-| Recall@5 | 0.95 |
-| Recall@10 | 0.97 |
-| MRR | 0.89 |
-
-These are idealized numbers. Real-world performance depends heavily on query complexity and corpus quality.
+The script reports recall@1, recall@3, recall@5, recall@10, and MRR. This
+repository ships fixture questions so the harness is easy to inspect, but it
+does not ship a benchmark-grade corpus or claim default quality numbers.
 
 ## Tradeoffs and Design Decisions
 
-### Why Hybrid Beats Pure Vector
+### Why Hybrid Retrieval
 
 Pure vector search excels at semantic matching but struggles with rare terms, specific IDs, and exact phrases. BM25 solves this by weighting term frequency and inverse document frequency. A query like "RFC 2616" or a user asking for a specific product SKU requires BM25. Meanwhile, "what does the Constitution say about state power?" needs semantic understanding.
 
-Reciprocal rank fusion balances both signals elegantly. Documents that rank high in either method get boosted. This approach outperforms pure vector search on diverse corpora (legal docs, code, manuals) where terminology matters as much as meaning.
+Reciprocal rank fusion balances both signals without assuming the BM25 and
+vector scores live on the same scale. Treat it as a strong default to evaluate,
+not proof that hybrid search wins for every corpus.
 
-### Chunk Size Matters More Than You Think
+### Chunk Size Tradeoffs
 
-We ship with 512 tokens and 50 token overlap. This is not arbitrary. Too small (128 tokens) and you lose context. Too large (2048 tokens) and you dilute signal. Chunk boundaries matter more than size. A boundary in the middle of a sentence kills relevance. Our header-aware chunker respects structure because chapters, sections, and paragraphs are semantic units.
+The default is 512 words with 50 words of overlap. That is a practical starting
+point, not a universal rule. The chunker uses simple line and header heuristics
+so readers can understand the behavior quickly.
 
 ### Reranking ROI
 
 Cross-encoders are slower than first-pass retrieval but often more precise. This starter reranks only the top candidates from hybrid search, not all indexed documents. The exact latency and quality tradeoff depends on corpus size, hardware, and model choice, so measure it against your own eval set before relying on it.
 
-### Citations Build Trust
+### Source Metadata
 
-Users trust retrieval systems with citations more than without. Every result includes source metadata so your application can render citations, links, or confidence notes. In regulated domains, this is only one piece of the work; you still need policy, access control, audit, and review workflows around it.
+Every result includes source metadata so an application can render citations,
+links, or confidence notes. In regulated domains, this is only one piece of the
+work; you still need policy, access control, audit, and review workflows around it.
 
 ### Why Local Embeddings
 
-Sentence-transformers (all-MiniLM-L6-v2) produces 384-dimensional vectors and runs offline. No API calls, no latency, no cost per token. For many domains, quality is sufficient. For specialized use cases (legal, medical), consider domain-specific models. The architecture supports any embedding model, so experimenting is low friction.
+Sentence-transformers (all-MiniLM-L6-v2) produces 384-dimensional vectors and
+runs offline. It avoids API calls and per-token fees, but local inference still
+has a latency and hardware cost. Specialized use cases may need a different
+embedding model.
 
-## Lessons from Production RAG
+## Lessons That Shaped This Starter
 
-Kerry built a procurement RAG system at FwdThink that processed thousands of RFP documents. Here are insights that shaped this starter.
+This starter is informed by production retrieval work, but the repository itself
+is intentionally smaller. These are design notes, not claims that the starter
+already includes every production control.
 
-**Chunk boundaries matter more than chunk size**. A 512-token chunk with bad boundaries (mid-sentence) hurts recall worse than a 256-token chunk at a paragraph break. Our chunker respects headers by default.
+**Chunk boundaries matter more than chunk size**. A chunk with bad boundaries
+can hurt recall worse than a smaller chunk at a paragraph break. The starter
+uses simple structure-aware chunking by default.
 
-**Citations drive adoption faster than any UI polish**. When lawyers see source line numbers, they trust the system. Without them, even correct answers feel risky. Include source metadata from day one.
+**Source metadata changes the review conversation**. Even when a retrieval
+result is correct, people need to see where it came from. Include source
+metadata from day one.
 
 **Eval sets must include adversarial examples**. Build questions with no answer in the corpus. If your system confidently returns results for "what is X?" when X never appears in documents, you have a problem. Include 10-20% negative questions.
 
-**Vector search alone underperforms on identifiers and jargon**. Queries with product codes, RFCs, or acronyms need BM25. Real corpora are mixed (prose plus lists, code snippets, structured data). Hybrid search is not optional for production.
+**Vector search alone can miss identifiers and jargon**. Queries with product
+codes, RFCs, or acronyms often need lexical search. Real corpora are mixed
+prose, lists, code snippets, and structured data.
 
-**FAISS CPU is fast enough for most teams**. GPU acceleration helps at 10M+ vectors. Below that, CPU FAISS is simple, local, and adequate. Use it until profiling says otherwise.
+**FAISS CPU is a useful local default**. It keeps setup simple while you learn
+whether the rest of the retrieval pipeline is worth hardening.
 
-**Reranking is the easiest win for quality**. Moving from top 10 to top 5 by reranking improves perceived quality dramatically. Users notice precision more than recall. One model (ms-marco) handles most domains well.
+**Reranking is worth measuring early**. Cross-encoders can improve precision,
+but they add latency. Measure the tradeoff against your own fixture set.
 
 ## Testing
 
